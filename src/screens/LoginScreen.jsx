@@ -1,15 +1,31 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Axios from '../api/Axios';
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = React.useState('');
     const [showOtp, setShowOtp] = React.useState(false);
     const [otpDigits, setOtpDigits] = React.useState(['', '', '', '', '', '']);
+    const [loading, setLoading] = React.useState(false);
     const inputsRef = React.useRef([]);
 
-    const handleGetOtp = () => {
-        if (email) setShowOtp(true);
+    const handleGetOtp = async() => {
+        console.log("email email aa bhi aaya", email);
+        
+        setLoading(true);
+        try {
+            const response = await Axios.post('/api/user/email-login', { email });
+            console.log("response", response);
+            if (response.status === 200) setShowOtp(true);
+            else {
+                alert(response.data.message || 'Failed to send OTP');
+            }
+        } catch (error) {
+            console.error('Error sending OTP:', error.response?.data || error.message);
+            alert(error.response?.data?.message || 'An error occurred');
+        }
+        setLoading(false);
     };
 
     const handleOtpChange = (text, idx) => {
@@ -23,10 +39,22 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
-    const handleVerifyOtp = () => {
-        if (otpDigits.join('') === '123456') {
-            navigation.navigate('Main');
+    const handleVerifyOtp = async() => {
+        setLoading(true);
+        try {
+            const response = await Axios.post('/api/user/verify-otp', {email, otp: otpDigits.join('') });
+            console.log("response", response);
+            
+            if(response.status === 200) {
+                navigation.navigate('Main');
+            } else {
+                alert(response.data.message || 'Invalid OTP');
+            }
+        } catch (error) {
+            console.error('Error verifying OTP:', error.response?.data || error.message);
+            alert(error.response?.data?.message || 'An error occurred');
         }
+        setLoading(false);
     };
 
     return (
@@ -41,8 +69,8 @@ const LoginScreen = ({ navigation }) => {
                     onChangeText={setEmail}
                 />
                 {!showOtp && (
-                    <TouchableOpacity style={styles.button} onPress={handleGetOtp}>
-                        <Text style={styles.buttonText}>Get Otp</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleGetOtp} disabled={loading}>
+                        {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Get Otp</Text>}
                     </TouchableOpacity>
                 )}
                 {showOtp && (
@@ -61,17 +89,17 @@ const LoginScreen = ({ navigation }) => {
                                 />
                             ))}
                         </View>
-                        <TouchableOpacity style={styles.button} onPress={handleVerifyOtp}>
-                            <Text style={styles.buttonText}>Verify OTP</Text>
+                        <TouchableOpacity style={styles.button} onPress={handleVerifyOtp} disabled={loading}>
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Verify OTP</Text>}
                         </TouchableOpacity>
                     </View>
                 )}
                 <Text style={styles.or}>Or continue with</Text>
                 <View style={styles.socialRow}>
-                    <TouchableOpacity style={styles.socialButton}><Text>Facebook</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.socialButton}><Text>Google</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonSocial}><Text style={styles.buttonSocialText}>Continue with Facebook</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.buttonSocial}><Text style={styles.buttonSocialText}>Continue with Google</Text></TouchableOpacity>
                 </View>
-                <Text style={styles.signup}>Don't have an account? <Text style={styles.signupLink}>Sign up</Text></Text>
+                <Text style={styles.signup}>Don't have an account? <Text style={styles.signupLink} onPress={() => navigation.navigate('Signup')}>Sign up</Text></Text>
             </View>
         </SafeAreaView>
     );
@@ -81,13 +109,14 @@ const styles = StyleSheet.create({
     container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff' },
     title: { fontSize: 22, fontWeight: '600', marginBottom: 32, color: '#888' },
     input: { width: '80%', borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 16 },
-    button: { backgroundColor: '#5B5BD6', borderRadius: 8, paddingVertical: 12, paddingHorizontal: 32, marginBottom: 16 },
+    button: { backgroundColor: '#4A55A1', borderRadius: 8, paddingVertical: 12, paddingHorizontal: 32, marginBottom: 16, width: '80%', alignItems: 'center'  },
     buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
     or: { marginVertical: 8, color: '#888' },
-    socialRow: { flexDirection: 'row', gap: 16, marginBottom: 24 },
-    socialButton: { backgroundColor: '#eee', borderRadius: 8, padding: 10, marginHorizontal: 8 },
+    socialRow: { flexDirection: 'column', gap: 12, marginBottom: 24, width: '80%' },
+    buttonSocial: { backgroundColor: '#f0f0f0', borderRadius: 8, paddingVertical: 12, paddingHorizontal: 32, marginBottom: 12, width: '100%', alignItems: 'center', borderColor: '#ccc', borderWidth: 1 },
+    buttonSocialText: { color: '#333', fontSize: 16, fontWeight: '600' },
     signup: { color: '#888' },
-    signupLink: { color: '#5B5BD6', fontWeight: '600' },
+    signupLink: { color: '#4A55A1', fontWeight: '600' },
 });
 
 export default LoginScreen;
