@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
+import Axios from '../api/Axios';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import SignupScreen from '../screens/SignupScreen';
@@ -13,9 +13,12 @@ import BookVenueScreen from '../screens/BookVenueScreen';
 import CreateActivityScreen from '../screens/CreateActivityScreen';
 import GamesScreen from '../screens/GamesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator  ();
 const Tab = createBottomTabNavigator();
+
+
 
 function MainTabs() {
   return (
@@ -45,15 +48,36 @@ function MainTabs() {
 }
 
 export default function AppNavigator() {
+
+  const [isLogin, setIslogin] = useState(false)
+
+  const dashboard = async()=>{
+    const response = await Axios.get('/api/user/dashboard')
+    if(response.status === 200){
+      console.log("reraasasdasd",response);
+      await AsyncStorage.setItem("isLogin", "true");
+      setIslogin(true)
+    }else{
+      await AsyncStorage.setItem("isLogin", "false");
+      setIslogin(false)
+    }
+  }
+  useEffect(()=>{
+    dashboard()
+  },[])
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Signup" component={SignupScreen} />
+      <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={isLogin ? "Main" : "Welcome"}>
+          {!isLogin && (
+            <>
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Login" component={LoginScreen} />
+              <Stack.Screen name="Signup" component={SignupScreen} />
+            </>
+          )}
           <Stack.Screen name="Main" component={MainTabs} />
-        </Stack.Navigator>
+          </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
   );

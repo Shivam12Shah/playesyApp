@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Axios from '../api/Axios';
+// import AppHeader from '../components/AppHeader';
 
 const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -75,6 +76,7 @@ const SignupScreen = ({ navigation }) => {
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+            {/* <AppHeader /> */}
             <View style={styles.container}>
                 {!showOtpInput && !showNameInput && (
                     <>
@@ -158,4 +160,4 @@ const styles = StyleSheet.create({
     signupLink: { color: '#4A55A1', fontWeight: '600' },
 });
 
-export default SignupScreen; 
+export default SignupScreen;

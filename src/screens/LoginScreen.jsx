@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Axios from '../api/Axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = React.useState('');
@@ -46,6 +47,10 @@ const LoginScreen = ({ navigation }) => {
             console.log("response", response);
             
             if(response.status === 200) {
+                const token = response.data.token;
+                console.log(token);
+                
+                await AsyncStorage.setItem('token', token);
                 navigation.navigate('Main');
             } else {
                 alert(response.data.message || 'Invalid OTP');

@@ -1,55 +1,70 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Axios from '../api/Axios';
+import UserHeader from '../components/Dashboard/UserHeader';
+import QuickActions from '../components/Dashboard/QuickActions';
+import UpcomingActivities from '../components/Dashboard/UpcomingActivities';
+import Offers from '../components/Dashboard/Offers';
+import RecentlyVisitedVenues from '../components/Dashboard/RecentlyVisitedVenues';
+import VenuesNearYou from '../components/Dashboard/VenuesNearYou';
+import AppHeader from '../components/AppHeader';
 
-const venues = [
-  { name: 'Tennis Court', distance: '1.2 miles away', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' }},
-  { name: 'Basketball Court', distance: '2.5 miles away', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' }},
-  { name: 'Soccer Field', distance: '3.1 mi', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' }},
+const mockUser = { name: 'Alex', playpals: 12, activities: 16 };
+const mockActivities = [
+  { id: 1, name: 'Sun Play Sports Academy', date: '06 Aug - 5:00 PM', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+  { id: 2, name: 'Letz Play Paper...', date: '07 Aug - 6:00 PM', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80' },
+  { id: 3, name: 'Letz Play Paper...', date: '07 Aug - 6:00 PM', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
 ];
+const mockOffers = [
+  { id: 1, title: 'Letz Play', description: '25% Off on swimming', coupon: 'SWIM25', image: 'https://images.unsplash.com/photo-1508610048659-a06b669e4c47?auto=format&fit=crop&w=400&q=80' },
+  { id: 2, title: 'VV Badminton', description: '50% Off on badminton', coupon: 'VVEBAD', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80' },
+  { id: 3, title: 'VV Badminton', description: '50% Off on badminton', coupon: 'VVEBAD', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
+];
+const mockVisitedVenues = [
+  { id: 1, name: 'Kittur Rani Chennamma Sports Stadium', location: 'Ullal', price: '₹200 per hour', image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80' },
+  { id: 2, name: 'Sun Play Sports Academy', location: 'JP Nagar', price: '₹250 per hour', image: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=400&q=80' },
+];
+const mockVenuesNearYou = [
+  { id: 1, name: 'Kittur Rani Chennamma Sports Stadium', location: 'Mallathahalli (1.4 km)', price: '₹200 per person', image: 'https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80' },
+  { id: 2, name: 'Letz Play Sports', location: 'Banashankari (2.1 km)', price: '₹180 per person', image: 'https://images.unsplash.com/photo-1508610048659-a06b669e4c47?auto=format&fit=crop&w=400&q=80' },
+];
+const mockDates = ['Aug, 05', 'Aug, 06', 'Aug, 07'];
 
-const DashboardScreen = ({ navigation }) => (
-  <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Dashboard</Text>
-      <Text style={styles.greeting}>Hi, Alex</Text>
-      <Text style={styles.section}>Nearby</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {venues.map((venue, idx) => (
-          <View key={idx} style={styles.venueCard}>
-            <Image source={venue.img} style={styles.venueImg} />
-            <Text style={styles.venueName}>{venue.name}</Text>
-            <Text style={styles.venueDistance}>{venue.distance}</Text>
-          </View>
-        ))}
+const DashboardScreen = ({ navigation }) => {
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await Axios.get('/api/user/dashboard');
+        console.log("Dashboard API Response:", response.data);
+        // You can set this data to state here and display it in your UI
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  const [selectedDate, setSelectedDate] = React.useState(mockDates[0]);
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <ScrollView style={styles.container}>
+        {/* <UserHeader user={mockUser} /> */}
+        <AppHeader/>
+        <QuickActions onAction={(key) => {}} />
+        <UpcomingActivities activities={mockActivities} />
+        <Offers offers={mockOffers} />
+        <RecentlyVisitedVenues venues={mockVisitedVenues} />
+        <VenuesNearYou venues={mockVenuesNearYou} dates={mockDates} selectedDate={selectedDate} onDateSelect={setSelectedDate} />
       </ScrollView>
-      <Text style={styles.section}>Quick Book</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
-        {venues.map((venue, idx) => (
-          <TouchableOpacity key={idx} style={styles.quickBookCard}>
-            <Image source={venue.img} style={styles.venueImg} />
-            <Text style={styles.venueName}>{venue.name}</Text>
-            <Text style={styles.quickBookText}>Book a court</Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <Text style={styles.section}>Trending</Text>
-      <View style={styles.trendingRow}>
-        <Text style={styles.trendingItem}>Sports</Text>
-        <Text style={styles.trendingItem}>Events</Text>
-      </View>
-      <Text style={styles.section}>Offers</Text>
-      <View style={styles.offerCard}>
-        <Text style={styles.offerText}>Limited Time</Text>
-        <Text style={styles.offerTitle}>20% off on all court bookings</Text>
-        <TouchableOpacity style={styles.bookNowBtn}><Text style={styles.bookNowText}>Book Now</Text></TouchableOpacity>
-      </View>
-    </ScrollView>
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
+  container: { flex: 1, backgroundColor: '#fff', paddingy: 16 },
   title: { fontSize: 22, fontWeight: '600', color: '#888', marginBottom: 8 },
   greeting: { fontSize: 20, fontWeight: '700', marginBottom: 16 },
   section: { fontSize: 18, fontWeight: '600', marginTop: 16, marginBottom: 8 },

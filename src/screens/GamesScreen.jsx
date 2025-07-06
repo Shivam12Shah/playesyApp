@@ -1,10 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, SafeAreaView } from 'react-native';
+import AppHeader from '../components/AppHeader';
 
 const games = [
-  { sport: 'Basketball', name: 'Pickup Basketball', players: '10 players · Intermediate', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' }},
+  { sport: 'Basketball', name: 'Pickup Basketball', players: '10 players · Intermediate', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
   { sport: 'Basketball', name: 'Basketball Practice', players: '5 players · Beginner', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
-  { sport: 'Basketball', name: 'Basketball Tournament', players: '12 players · Advanced', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' }},
+  { sport: 'Basketball', name: 'Basketball Tournament', players: '12 players · Advanced', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
   { sport: 'Soccer', name: 'Soccer Match', players: '14 players · Intermediate', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
   { sport: 'Soccer', name: 'Soccer Practice', players: '10 players · Beginner', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
   { sport: 'Soccer', name: 'Soccer Tournament', players: '16 players · Advanced', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
@@ -13,6 +14,7 @@ const games = [
 const GamesScreen = () => (
   <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
     <View style={styles.container}>
+    <AppHeader />
       <Text style={styles.title}>Games</Text>
       <FlatList
         data={games}

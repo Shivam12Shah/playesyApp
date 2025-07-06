@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AppHeader from '../components/AppHeader';
 
 const playingTypes = ['Beginner', 'Intermediate', 'Pro'];
 const sportsList = ['Football', 'Cricket', 'Badminton', 'Tennis', 'Basketball'];
@@ -23,95 +24,99 @@ const ProfileScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', padding: 24 }}>
-      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
-        
-        <View style={styles.avatarContainer}>
-          <Image
-            source={{ uri: 'https://ui-avatars.com/api/?name=John+Doe&background=5B5BD6&color=fff&size=128' }}
-            style={styles.avatar}
-          />
-          <TouchableOpacity style={styles.editIcon}>
-            <Icon name="camera" size={20} color="#fff" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.followBox}>
-          <Text style={styles.followCount}>{following}</Text>
-          <Text style={styles.followLabel}>Following</Text>
-        </View>
-        <View style={styles.followBox}>
-          <Text style={styles.followCount}>{followers}</Text>
-          <Text style={styles.followLabel}>Followers</Text>
-        </View>
-      </View>
-      <Text style={styles.title}>Profile</Text>
-      <View style={styles.section}>
-        <Text style={styles.label}>Name</Text>
-        {editMode ? (
-          <TextInput style={styles.input} value={name} onChangeText={setName} />
-        ) : (
-          <Text style={styles.value}>{name}</Text>
-        )}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.label}>Email</Text>
-        {editMode ? (
-          <TextInput style={styles.input} value={email} onChangeText={setEmail} />
-        ) : (
-          <Text style={styles.value}>{email}</Text>
-        )}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.label}>Phone</Text>
-        {editMode ? (
-          <TextInput style={styles.input} value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
-        ) : (
-          <Text style={styles.value}>{phone}</Text>
-        )}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.label}>Playing Type</Text>
-        {editMode ? (
-          <View style={{ flexDirection: 'row', gap: 8 }}>
-            {playingTypes.map(type => (
-              <TouchableOpacity
-                key={type}
-                style={[styles.chip, playingType === type && styles.chipSelected]}
-                onPress={() => setPlayingType(type)}
-              >
-                <Text style={{ color: playingType === type ? '#fff' : '#5B5BD6' }}>{type}</Text>
-              </TouchableOpacity>
-            ))}
+    <>
+     
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', padding: 24 }}>
+         <AppHeader />  
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
+          
+          <View style={styles.avatarContainer}>
+            <Image
+              source={{ uri: 'https://ui-avatars.com/api/?name=John+Doe&background=5B5BD6&color=fff&size=128' }}
+              style={styles.avatar}
+            />
+            <TouchableOpacity style={styles.editIcon}>
+              <Icon name="camera" size={20} color="#fff" />
+            </TouchableOpacity>
           </View>
-        ) : (
-          <Text style={styles.value}>{playingType}</Text>
-        )}
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.label}>Favorite Sports</Text>
-        {editMode ? (
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-            {sportsList.map(sport => (
-              <TouchableOpacity
-                key={sport}
-                style={[styles.chip, sports.includes(sport) && styles.chipSelected]}
-                onPress={() => toggleSport(sport)}
-              >
-                <Text style={{ color: sports.includes(sport) ? '#fff' : '#5B5BD6' }}>{sport}</Text>
-              </TouchableOpacity>
-            ))}
+          <View style={styles.followBox}>
+            <Text style={styles.followCount}>{following}</Text>
+            <Text style={styles.followLabel}>Following</Text>
           </View>
-        ) : (
-          <Text style={styles.value}>{sports.join(', ')}</Text>
-        )}
-      </View>
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: editMode ? '#5B5BD6' : '#eee' }]}
-        onPress={() => setEditMode(!editMode)}
-      >
-        <Text style={{ color: editMode ? '#fff' : '#5B5BD6', fontWeight: '600' }}>{editMode ? 'Save' : 'Edit Profile'}</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+          <View style={styles.followBox}>
+            <Text style={styles.followCount}>{followers}</Text>
+            <Text style={styles.followLabel}>Followers</Text>
+          </View>
+        </View>
+        <Text style={styles.title}>Profile</Text>
+        <View style={styles.section}>
+          <Text style={styles.label}>Name</Text>
+          {editMode ? (
+            <TextInput style={styles.input} value={name} onChangeText={setName} />
+          ) : (
+            <Text style={styles.value}>{name}</Text>
+          )}
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Email</Text>
+          {editMode ? (
+            <TextInput style={styles.input} value={email} onChangeText={setEmail} />
+          ) : (
+            <Text style={styles.value}>{email}</Text>
+          )}
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Phone</Text>
+          {editMode ? (
+            <TextInput style={styles.input} value={phone} onChangeText={setPhone} keyboardType="phone-pad" />
+          ) : (
+            <Text style={styles.value}>{phone}</Text>
+          )}
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Playing Type</Text>
+          {editMode ? (
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              {playingTypes.map(type => (
+                <TouchableOpacity
+                  key={type}
+                  style={[styles.chip, playingType === type && styles.chipSelected]}
+                  onPress={() => setPlayingType(type)}
+                >
+                  <Text style={{ color: playingType === type ? '#fff' : '#5B5BD6' }}>{type}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.value}>{playingType}</Text>
+          )}
+        </View>
+        <View style={styles.section}>
+          <Text style={styles.label}>Favorite Sports</Text>
+          {editMode ? (
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+              {sportsList.map(sport => (
+                <TouchableOpacity
+                  key={sport}
+                  style={[styles.chip, sports.includes(sport) && styles.chipSelected]}
+                  onPress={() => toggleSport(sport)}
+                >
+                  <Text style={{ color: sports.includes(sport) ? '#fff' : '#5B5BD6' }}>{sport}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ) : (
+            <Text style={styles.value}>{sports.join(', ')}</Text>
+          )}
+        </View>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: editMode ? '#5B5BD6' : '#eee' }]}
+          onPress={() => setEditMode(!editMode)}
+        >
+          <Text style={{ color: editMode ? '#fff' : '#5B5BD6', fontWeight: '600' }}>{editMode ? 'Save' : 'Edit Profile'}</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </>
   );
 };
 

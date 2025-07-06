@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppHeader from '../components/AppHeader';
 
 const venues = [
     { name: 'Central Park Tennis Courts', courts: '4 courts available', img: { uri: 'https://media.istockphoto.com/id/1295248329/photo/beautiful-young-black-boy-training-on-the-football-pitch.jpg?s=612x612&w=0&k=20&c=ws4m_NoSF8fRZGNoq5kVlJSfNghREKihaxsOBXAHOw8=' } },
@@ -10,6 +11,7 @@ const venues = [
 
 const BookVenueScreen = () => (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <AppHeader />
         <View style={styles.container}>
             <Text style={styles.title}>Book a venue</Text>
             <TextInput style={styles.search} placeholder="Search" />

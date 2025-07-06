@@ -1,26 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AppHeader from '../components/AppHeader';
 
 const CreateActivityScreen = () => (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-        <View style={styles.container}>
-            <Text style={styles.title}>Create Activity</Text>
-            <Text style={styles.label}>Sport</Text>
-            <TextInput style={styles.input} placeholder="Pickleball" />
-            <Text style={styles.label}>Date & Time</Text>
-            <TextInput style={styles.input} placeholder="Today, 6:00 PM" />
-            <Text style={styles.label}>Venue</Text>
-            <TextInput style={styles.input} placeholder="Central Park Courts" />
-            <Text style={styles.label}>Invite Friends</Text>
-            <TouchableOpacity style={styles.inviteBtn}><Text style={styles.inviteText}>Invite Friends</Text></TouchableOpacity>
-            <Text style={styles.label}>Max Players</Text>
-            <TextInput style={styles.input} placeholder="4" keyboardType="numeric" />
-            <Text style={styles.label}>Payment Split</Text>
-            <TouchableOpacity style={styles.inviteBtn}><Text style={styles.inviteText}>Split Evenly</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.createBtn}><Text style={styles.createBtnText}>Create Activity</Text></TouchableOpacity>
-        </View>
-    </SafeAreaView>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <AppHeader />
+            <View style={styles.container}>
+                <Text style={styles.title}>Create Activity</Text>
+                <Text style={styles.label}>Sport</Text>
+                <TextInput style={styles.input} placeholder="Pickleball" />
+                <Text style={styles.label}>Date & Time</Text>
+                <TextInput style={styles.input} placeholder="Today, 6:00 PM" />
+                <Text style={styles.label}>Venue</Text>
+                <TextInput style={styles.input} placeholder="Central Park Courts" />
+                <Text style={styles.label}>Invite Friends</Text>
+                <TouchableOpacity style={styles.inviteBtn}><Text style={styles.inviteText}>Invite Friends</Text></TouchableOpacity>
+                <Text style={styles.label}>Max Players</Text>
+                <TextInput style={styles.input} placeholder="4" keyboardType="numeric" />
+                <Text style={styles.label}>Payment Split</Text>
+                <TouchableOpacity style={styles.inviteBtn}><Text style={styles.inviteText}>Split Evenly</Text></TouchableOpacity>
+                <TouchableOpacity style={styles.createBtn}><Text style={styles.createBtnText}>Create Activity</Text></TouchableOpacity>
+            </View>
+        </SafeAreaView>
 );
 
 const styles = StyleSheet.create({
